@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F6FA">
+
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 🚨 Emergency Call -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/emergencyCallButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Emergency"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#DC2626"
+                app:icon="@drawable/ic_baseline_warning_24"
+                app:iconTint="@android:color/white"
+                app:iconGravity="textTop"
+                app:iconPadding="12dp"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 🗺️ Open Map -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/openMapButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Map"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#2563EB"
+                app:icon="@drawable/ic_baseline_map_24"
+                app:iconTint="@android:color/white"
+                app:iconGravity="textTop"
+                app:iconPadding="12dp"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 📍 Share Location -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="6dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/shareLocationButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Share"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#059669"
+                app:icon="@drawable/ic_baseline_share_location_24"
+                app:iconTint="@android:color/white"
+                app:iconGravity="textTop"
+                app:iconPadding="12dp"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
