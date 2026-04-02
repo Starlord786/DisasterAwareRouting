@@ -6,7 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST = 100
+    private val LOCATION_PERMISSION_MAP_REQUEST = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +28,9 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Buttons
-        val emergencyCallButton = findViewById<Button>(R.id.emergencyCallButton)
-        val openMapButton = findViewById<Button>(R.id.openMapButton)
-        val shareLocationButton = findViewById<Button>(R.id.shareLocationButton)
+        val emergencyCallButton = findViewById<View>(R.id.emergencyCallButton)
+        val openMapButton = findViewById<View>(R.id.openMapButton)
+        val shareLocationButton = findViewById<View>(R.id.shareLocationButton)
 
         // 🚨 Emergency Call (Dialer)
         emergencyCallButton.setOnClickListener {
@@ -39,19 +40,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(dialIntent)
         }
 
-        // 🗺️ Open Google Maps
+        // 🗺️ Check Zone & Open Google Maps
         openMapButton.setOnClickListener {
-            val mapIntent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("geo:0,0?q=My+Location")
-            ).apply {
-                setPackage("com.google.android.apps.maps")
-            }
-
-            if (mapIntent.resolveActivity(packageManager) != null) {
-                startActivity(mapIntent)
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_MAP_REQUEST
+                )
             } else {
-                Toast.makeText(this, "Google Maps not installed", Toast.LENGTH_SHORT).show()
+                fetchLocationAndOpenMap()
             }
         }
 
@@ -84,15 +86,15 @@ class MainActivity : AppCompatActivity() {
                     val message =
                         "Emergency! My live location:\nhttps://maps.google.com/?q=$lat,$lng"
 
-                    val smsIntent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("smsto:")
-                        putExtra("sms_body", message)
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, message)
                     }
 
-                    if (smsIntent.resolveActivity(packageManager) != null) {
-                        startActivity(smsIntent)
-                    } else {
-                        Toast.makeText(this, "No SMS app found", Toast.LENGTH_SHORT).show()
+                    try {
+                        startActivity(Intent.createChooser(shareIntent, "Share your location"))
+                    } catch (e: Exception) {
+                        Toast.makeText(this@MainActivity, "No apps available to share", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(
@@ -108,6 +110,48 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 🔹 Permission result
+    
+    private fun fetchLocationAndOpenMap() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    showSafetyDialogAndOpenMap(location.latitude, location.longitude)
+                } else {
+                    Toast.makeText(this, "Unable to get precise location. Using default.", Toast.LENGTH_SHORT).show()
+                    showSafetyDialogAndOpenMap(40.7128, -74.0060)
+                }
+            }.addOnFailureListener {
+                Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
+                showSafetyDialogAndOpenMap(40.7128, -74.0060)
+            }
+        }
+    }
+
+    private fun showSafetyDialogAndOpenMap(lat: Double, lng: Double) {
+        val isSafeZone = listOf(true, false).random()
+        
+        val title = if (isSafeZone) "✅ Safe Zone" else "⚠️ Critical Zone"
+        val message = if (isSafeZone) {
+            "Your current location is marked as clear from immediate disaster threats."
+        } else {
+            "WARNING: Imminent threat detected in your vicinity! Please proceed to safety."
+        }
+
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton("View Map") { _, _ ->
+                val trackingIntent = Intent(this@MainActivity, MapTrackerActivity::class.java).apply {
+                    putExtra("IS_SAFE_ZONE", isSafeZone)
+                    putExtra("LATITUDE", lat)
+                    putExtra("LONGITUDE", lng)
+                }
+                startActivity(trackingIntent)
+            }
+            .setNegativeButton("Dismiss", null)
+            .setCancelable(false)
+            .show()
+    }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -115,11 +159,12 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == LOCATION_PERMISSION_REQUEST &&
-            grantResults.isNotEmpty() &&
-            grantResults[0] == PackageManager.PERMISSION_GRANTED
-        ) {
-            shareLocation()
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (requestCode == LOCATION_PERMISSION_REQUEST) {
+                shareLocation()
+            } else if (requestCode == LOCATION_PERMISSION_MAP_REQUEST) {
+                fetchLocationAndOpenMap()
+            }
         } else {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
         }

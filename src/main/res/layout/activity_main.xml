@@ -4,83 +4,234 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6FA">
+    android:background="#F8FAFC">
 
-    <LinearLayout
-        android:id="@+id/buttonContainer"
+    <!-- Premium light background header area -->
+    <View
+        android:id="@+id/headerBackground"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
+        android:text="DisasterAware"
+        android:textColor="#0F172A"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:letterSpacing="0.02"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="24dp"/>
+
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Critical tools at your fingertips"
+        android:textColor="#64748B"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintStart_toStartOf="@id/titleText"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Content area with overlapping modern buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintTop_toBottomOf="@id/subtitleText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="24dp">
 
         <!-- 🚨 Emergency Call -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_marginBottom="20dp"
+            android:id="@+id/emergencyCallButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="8dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E2E8F0"
+            app:cardBackgroundColor="#FFFFFF">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/emergencyCallButton"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Emergency"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#DC2626"
-                app:icon="@drawable/ic_baseline_warning_24"
-                app:iconTint="@android:color/white"
-                app:iconGravity="textTop"
-                app:iconPadding="12dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="#DC2626"
+                    app:cardElevation="0dp">
+                    
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_baseline_warning_24"
+                        app:tint="#FFFFFF"
+                        android:layout_gravity="center"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Emergency Call"
+                        android:textColor="#1E293B"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dial standard emergency line"
+                        android:textColor="#64748B"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <!-- 🗺️ Open Map -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:layout_marginBottom="20dp"
+            android:id="@+id/openMapButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="8dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E2E8F0"
+            app:cardBackgroundColor="#FFFFFF">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/openMapButton"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Map"
-                android:textSize="16sp"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#2563EB"
-                app:icon="@drawable/ic_baseline_map_24"
-                app:iconTint="@android:color/white"
-                app:iconGravity="textTop"
-                app:iconPadding="12dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="#2563EB"
+                    app:cardElevation="0dp">
+                    
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_baseline_map_24"
+                        app:tint="#FFFFFF"
+                        android:layout_gravity="center"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Open Map"
+                        android:textColor="#1E293B"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View local map tracking"
+                        android:textColor="#64748B"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <!-- 📍 Share Location -->
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
+            android:id="@+id/shareLocationButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
+            app:cardElevation="8dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E2E8F0"
+            app:cardBackgroundColor="#FFFFFF">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/shareLocationButton"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Share"
-                android:textSize="16sp"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#059669"
-                app:icon="@drawable/ic_baseline_share_location_24"
-                app:iconTint="@android:color/white"
-                app:iconGravity="textTop"
-                app:iconPadding="12dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="20dp"
+                android:gravity="center_vertical">
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="#059669"
+                    app:cardElevation="0dp">
+                    
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_baseline_share_location_24"
+                        app:tint="#FFFFFF"
+                        android:layout_gravity="center"/>
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="16dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share Location"
+                        android:textColor="#1E293B"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Send coordinates quickly"
+                        android:textColor="#64748B"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
