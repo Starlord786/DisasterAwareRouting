@@ -8,19 +8,23 @@
 
     <application
         android:allowBackup="true"
-        android:label="DisasterAwareRouting"
+        android:label="PathGuard"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar">
 
-        <!-- MAIN SCREEN -->
+        <!-- SPLASH SCREEN -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- MAIN SCREEN -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
 
         <!-- EMERGENCY CONTACTS SCREEN (MISSING EARLIER) -->
         <activity

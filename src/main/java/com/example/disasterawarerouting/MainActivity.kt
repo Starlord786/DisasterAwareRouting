@@ -73,6 +73,68 @@ class MainActivity : AppCompatActivity() {
                 shareLocation()
             }
         }
+
+        // Fetch weather immediately if permission is already granted, else use default
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    fetchWeather(location.latitude, location.longitude)
+                } else {
+                    fetchWeather(40.7128, -74.0060)
+                }
+            }
+        } else {
+            fetchWeather(40.7128, -74.0060)
+        }
+    }
+
+    private fun fetchWeather(lat: Double, lng: Double) {
+        val titleText = findViewById<android.widget.TextView>(R.id.weatherTitleText)
+        val descText = findViewById<android.widget.TextView>(R.id.weatherDescText)
+        val iconText = findViewById<android.widget.TextView>(R.id.weatherIconText)
+        
+        kotlin.concurrent.thread {
+            try {
+                val urlString = "https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lng&current_weather=true"
+                val url = java.net.URL(urlString)
+                val connection = url.openConnection() as java.net.HttpURLConnection
+                connection.requestMethod = "GET"
+                connection.connectTimeout = 5000
+                connection.readTimeout = 5000
+                
+                if (connection.responseCode == 200) {
+                    val stream = connection.inputStream
+                    val response = stream.bufferedReader().use { it.readText() }
+                    val json = org.json.JSONObject(response)
+                    val current = json.getJSONObject("current_weather")
+                    val temp = current.getDouble("temperature")
+                    val code = current.getInt("weathercode")
+                    
+                    val (desc, emoji) = when (code) {
+                        0 -> "Clear sky" to "☀️"
+                        1, 2, 3 -> "Partly cloudy" to "⛅"
+                        45, 48 -> "Foggy" to "🌫️"
+                        51, 53, 55, 56, 57 -> "Drizzle" to "🌧️"
+                        61, 63, 65, 66, 67 -> "Rain" to "☂️"
+                        71, 73, 75, 77 -> "Snow" to "❄️"
+                        80, 81, 82 -> "Rain showers" to "☔"
+                        95, 96, 99 -> "Thunderstorm" to "⛈️"
+                        else -> "Weather info" to "🌡️"
+                    }
+                    
+                    runOnUiThread {
+                        titleText.text = "$temp°C"
+                        descText.text = desc
+                        iconText.text = emoji
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                runOnUiThread {
+                    descText.text = "Failed to load weather"
+                }
+            }
+        }
     }
 
     // 🔹 Get location and open SMS app

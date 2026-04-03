@@ -13,11 +13,6 @@ class MapTrackerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map_tracker)
 
-        val isSafeZone = intent.getBooleanExtra("IS_SAFE_ZONE", true)
-        val color = if (isSafeZone) "green" else "red"
-        val fillColor = if (isSafeZone) "#059669" else "#DC2626"
-        val message = if (isSafeZone) "Safe Zone: All clear." else "DANGER: Critical Zone detected!"
-
         val webView = findViewById<WebView>(R.id.mapWebView)
         webView.settings.javaScriptEnabled = true
         webView.settings.domStorageEnabled = true
@@ -42,24 +37,47 @@ class MapTrackerActivity : AppCompatActivity() {
             <body>
                 <div id="map"></div>
                 <script>
-                    var map = L.map('map').setView([$lat, $lng], 14);
+                    var map = L.map('map').setView([$lat, $lng], 7);
                     
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         maxZoom: 19,
                         attribution: '© OpenStreetMap components'
                     }).addTo(map);
 
-                    // Draw colored zone overlay
-                    var circle = L.circle([$lat, $lng], {
-                        color: '$color',
-                        fillColor: '$fillColor',
+                    // Safe zone at current location
+                    var safeCircle = L.circle([$lat, $lng], {
+                        color: 'green',
+                        fillColor: '#059669',
                         fillOpacity: 0.4,
-                        radius: 600
+                        radius: 10000
                     }).addTo(map);
 
-                    // Add a center marker
                     var marker = L.marker([$lat, $lng]).addTo(map);
-                    marker.bindPopup('<b>$message</b>').openPopup();
+                    marker.bindPopup('<b>Safe Zone: Current Location</b>').openPopup();
+
+                    function addDisasterZone(dLat, dLng, disasterName, radiusM) {
+                        var circle = L.circle([dLat, dLng], {
+                            color: 'red',
+                            fillColor: '#DC2626',
+                            fillOpacity: 0.5,
+                            radius: radiusM
+                        }).addTo(map);
+                        circle.bindPopup('<b>DANGER: ' + disasterName + '</b>');
+                    }
+
+                    // Near me like ocean near place (approx 50-70km away)
+                    addDisasterZone($lat + 0.4, $lng + 0.5, "Tsunami / Coastal Flood Warning", 15000);
+                    addDisasterZone($lat - 0.5, $lng + 0.3, "Severe Flash Flooding", 12000);
+
+                    // Random places around 200km away (~1.8 degrees)
+                    var disasters = ["Magnitude 6.5 Earthquake", "Major Wildfire", "Category 4 Hurricane", "Severe Tornado Warning", "Chemical Spill"];
+                    for(var i=0; i<disasters.length; i++) {
+                        var angle = Math.random() * Math.PI * 2;
+                        var dist = 1.6 + Math.random() * 0.6; // approx 1.6 to 2.2 degrees
+                        var rLat = $lat + Math.cos(angle) * dist;
+                        var rLng = $lng + Math.sin(angle) * dist;
+                        addDisasterZone(rLat, rLng, disasters[i], 25000 + Math.random() * 25000);
+                    }
 
                     // Query nearby Police Stations only
                     var overpassQuery = '[out:json];(node["amenity"="police"](around:3000, $lat, $lng););out body;';
