@@ -2,16 +2,27 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8FAFC">
+
+    <!-- Moving wide background for aurora effect -->
+    <View
+        android:id="@+id/auroraBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_aurora_wide"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- Premium light background header area -->
     <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:background="#FFFFFF"
+        android:background="#00FFFFFF"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
@@ -46,7 +57,7 @@
         android:orientation="vertical"
         android:padding="24dp"
         app:layout_constraintTop_toBottomOf="@id/subtitleText"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/footerLayout"
         android:layout_marginTop="24dp">
 
         <!-- 🌤️ Weather Info -->
@@ -284,6 +295,134 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Row 4: Specialized Services -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="false"
+            android:layout_marginTop="16dp">
+
+            <!-- 100 Police -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/policeCallButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="#FEF2F2">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="100"
+                        android:textColor="#DC2626"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_cool_call"
+                        android:drawablePadding="8dp"
+                        app:drawableTint="#DC2626"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Police"
+                        android:textColor="#F87171"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginTop="2dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 108 Ambulance -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ambulanceCallButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="#FEF2F2">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="108"
+                        android:textColor="#DC2626"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_cool_call"
+                        android:drawablePadding="8dp"
+                        app:drawableTint="#DC2626"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ambulance"
+                        android:textColor="#F87171"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:layout_marginTop="2dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Footer Logo & Name -->
+    <LinearLayout
+        android:id="@+id/footerLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_app_logo"
+            android:layout_marginEnd="6dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PathGuard"
+            android:textColor="#94A3B8"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"/>
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" by Creators"
+            android:textColor="#CBD5E1"
+            android:textSize="14sp"
+            android:layout_marginStart="2dp"
+            android:letterSpacing="0.05"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

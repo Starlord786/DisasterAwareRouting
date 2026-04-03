@@ -24,19 +24,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Start sliding aurora background animation
+        val auroraBg = findViewById<View>(R.id.auroraBackground)
+        val animator = android.animation.ObjectAnimator.ofFloat(auroraBg, "translationX", 0f, -2500f)
+        animator.duration = 15000 // 15 seconds
+        animator.repeatCount = android.animation.ValueAnimator.INFINITE
+        animator.repeatMode = android.animation.ValueAnimator.REVERSE
+        animator.start()
+
         // Location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Buttons
         val emergencyCallButton = findViewById<View>(R.id.emergencyCallButton)
+        val policeCallButton = findViewById<View>(R.id.policeCallButton)
+        val ambulanceCallButton = findViewById<View>(R.id.ambulanceCallButton)
         val openMapButton = findViewById<View>(R.id.openMapButton)
         val shareLocationButton = findViewById<View>(R.id.shareLocationButton)
 
-        // 🚨 Emergency Call (Dialer)
+        // 🚨 Emergency Call (Dialer 112)
         emergencyCallButton.setOnClickListener {
-            val dialIntent = Intent(Intent.ACTION_DIAL).apply {
-                data = Uri.parse("tel:112")
-            }
+            val dialIntent = Intent(Intent.ACTION_DIAL).apply { data = Uri.parse("tel:112") }
+            startActivity(dialIntent)
+        }
+        
+        // 🚓 Police Call (Dialer 100)
+        policeCallButton.setOnClickListener {
+            val dialIntent = Intent(Intent.ACTION_DIAL).apply { data = Uri.parse("tel:100") }
+            startActivity(dialIntent)
+        }
+
+        // 🚑 Ambulance Call (Dialer 108)
+        ambulanceCallButton.setOnClickListener {
+            val dialIntent = Intent(Intent.ACTION_DIAL).apply { data = Uri.parse("tel:108") }
             startActivity(dialIntent)
         }
 
