@@ -24,12 +24,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Start sliding aurora background animation
+        // Subtle aurora pulse animation (alpha only — no sliding to avoid white flash)
         val auroraBg = findViewById<View>(R.id.auroraBackground)
-        val animator = android.animation.ObjectAnimator.ofFloat(auroraBg, "translationX", 0f, -2500f)
-        animator.duration = 15000 // 15 seconds
+        val animator = android.animation.ObjectAnimator.ofFloat(auroraBg, "alpha", 1.0f, 0.7f)
+        animator.duration = 3000
         animator.repeatCount = android.animation.ValueAnimator.INFINITE
         animator.repeatMode = android.animation.ValueAnimator.REVERSE
+        animator.interpolator = android.view.animation.AccelerateDecelerateInterpolator()
         animator.start()
 
         // Location client
