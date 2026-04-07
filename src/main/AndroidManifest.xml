@@ -28,6 +28,11 @@
             android:name=".LoginActivity"
             android:exported="false" />
 
+        <!-- SIGN UP SCREEN -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+
         <!-- MAIN SCREEN -->
         <activity
             android:name=".MainActivity"

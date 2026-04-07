@@ -13,6 +13,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import android.os.Handler
 import android.os.Looper
@@ -106,6 +110,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 🚪 Logout Button
+        val logoutButton = findViewById<View>(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            // Sign out from Firebase
+            FirebaseAuth.getInstance().signOut()
+            
+            // Sign out from Google (if applicable)
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+            val googleSignInClient = GoogleSignIn.getClient(this, gso)
+            googleSignInClient.signOut().addOnCompleteListener {
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+                finish()
+            }
+        }
+
         // Fetch weather immediately if permission is already granted, else use default
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
@@ -125,6 +146,28 @@ class MainActivity : AppCompatActivity() {
                 showLocationPromptDialog()
             }
         }, 600)
+
+        // 🟢 Bottom Navigation Logic
+        val pageDashboard = findViewById<View>(R.id.pageDashboard)
+        val pageNavigate = findViewById<View>(R.id.pageNavigate)
+        val pageAlerts = findViewById<View>(R.id.pageAlerts)
+        val pageAssistant = findViewById<View>(R.id.pageAssistant)
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            pageDashboard.visibility = View.GONE
+            pageNavigate.visibility = View.GONE
+            pageAlerts.visibility = View.GONE
+            pageAssistant.visibility = View.GONE
+
+            when (item.itemId) {
+                R.id.nav_dashboard -> pageDashboard.visibility = View.VISIBLE
+                R.id.nav_navigate -> pageNavigate.visibility = View.VISIBLE
+                R.id.nav_alerts -> pageAlerts.visibility = View.VISIBLE
+                R.id.nav_assistant -> pageAssistant.visibility = View.VISIBLE
+            }
+            true
+        }
     }
 
     override fun onResume() {

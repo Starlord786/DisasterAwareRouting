@@ -70,22 +70,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         signUpText.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
-
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            Toast.makeText(this, "Account Created Successfully", Toast.LENGTH_SHORT).show()
-                            goToMainActivity()
-                        } else {
-                            Toast.makeText(this, "Signup Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-            } else {
-                Toast.makeText(this, "Please enter email and password to sign up", Toast.LENGTH_SHORT).show()
-            }
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
 
         forgotPasswordText.setOnClickListener {

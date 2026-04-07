@@ -60,6 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Enable Location"
+            android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="28dp"

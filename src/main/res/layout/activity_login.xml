@@ -52,6 +52,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxStrokeColor="@color/input_stroke"
+            app:hintTextColor="#4F46E5"
+            android:textColorHint="#333333"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -59,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
+                android:textColor="#64748B"
                 android:hint="Email Address" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,6 +77,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             app:passwordToggleEnabled="true"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxStrokeColor="@color/input_stroke"
+            app:hintTextColor="#4F46E5"
+            android:textColorHint="#333333"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -75,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:textColor="#64748B"
                 android:hint="Password" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,6 +115,7 @@
             android:layout_height="56dp"
             android:text="Login"
             android:textSize="16sp"
+            android:textColor="#FFFFFF"
             app:cornerRadius="12dp"
             android:layout_marginBottom="16dp"
             app:backgroundTint="#4F46E5"/>
