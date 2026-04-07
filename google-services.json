@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "178920864596",
+    "project_id": "disasterawarerouteplanning",
+    "storage_bucket": "disasterawarerouteplanning.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178920864596:android:267e15cc9d09e6a66be6c1",
+        "android_client_info": {
+          "package_name": "com.hybix.disasterAwarerouteplanning"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBFJy2txnbRS-2aGshMVngdCdJhfE73dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

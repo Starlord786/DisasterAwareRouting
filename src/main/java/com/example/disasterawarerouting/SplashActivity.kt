@@ -63,9 +63,16 @@ class SplashActivity : AppCompatActivity() {
         }
         pulseRing.startAnimation(pulseSet)
 
-        // Navigate to MainActivity after 2.5 seconds
+        // Navigate to appropriate Auth Screen after 2.5 seconds
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            val currentUser = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                // User is already logged in
+                startActivity(Intent(this, MainActivity::class.java))
+            } else {
+                // Not logged in, go to Login Screen
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }, 2500)

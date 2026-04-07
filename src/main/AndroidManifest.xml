@@ -23,6 +23,11 @@
             </intent-filter>
         </activity>
 
+        <!-- LOGIN SCREEN -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
         <!-- MAIN SCREEN -->
         <activity
             android:name=".MainActivity"

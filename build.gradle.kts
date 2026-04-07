@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -8,7 +9,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.disasterawarerouting"
+        applicationId = "com.hybix.disasterAwarerouteplanning"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -44,6 +45,11 @@ dependencies {
 
     // 🔥 Google Play Services Location (FIXED)
     implementation(libs.play.services.location)
+
+    // 🔥 Firebase and Google Authentication
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

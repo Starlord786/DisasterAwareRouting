@@ -14,11 +14,22 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
+import android.os.Handler
+import android.os.Looper
+import android.location.LocationManager
+import android.provider.Settings
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.ViewGroup
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST = 100
     private val LOCATION_PERMISSION_MAP_REQUEST = 101
+    private val LOCATION_PERMISSION_STARTUP_REQUEST = 102
+    private var isWaitingForGps = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,6 +118,81 @@ class MainActivity : AppCompatActivity() {
         } else {
             fetchWeather(40.7128, -74.0060)
         }
+
+        // 🌟 Show premium Location Services prompt when UI enters
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (!isDestroyed && !isFinishing) {
+                showLocationPromptDialog()
+            }
+        }, 600)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isWaitingForGps) {
+            isWaitingForGps = false
+            val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || 
+                               locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+            if (isGpsEnabled) {
+                restartApp()
+            }
+        }
+    }
+
+    private fun restartApp() {
+        val intent = Intent(this, SplashActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun showLocationPromptDialog() {
+        val permissionGranted = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || 
+                           locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+        // If everything is already fine, don't show the popup
+        if (permissionGranted && isGpsEnabled) {
+            return
+        }
+
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_location_permission)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.setCancelable(false)
+        
+        val btnEnableLocation = dialog.findViewById<View>(R.id.btnEnableLocation)
+        val btnNotNow = dialog.findViewById<View>(R.id.btnNotNow)
+        
+        btnEnableLocation.setOnClickListener {
+            dialog.dismiss()
+            if (!permissionGranted) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_STARTUP_REQUEST
+                )
+            } else if (!isGpsEnabled) {
+                isWaitingForGps = true
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+        }
+        
+        btnNotNow.setOnClickListener {
+            dialog.dismiss()
+        }
+        
+        dialog.show()
     }
 
     private fun fetchWeather(lat: Double, lng: Double) {
@@ -247,6 +333,8 @@ class MainActivity : AppCompatActivity() {
                 shareLocation()
             } else if (requestCode == LOCATION_PERMISSION_MAP_REQUEST) {
                 fetchLocationAndOpenMap()
+            } else if (requestCode == LOCATION_PERMISSION_STARTUP_REQUEST) {
+                restartApp()
             }
         } else {
             Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show()
