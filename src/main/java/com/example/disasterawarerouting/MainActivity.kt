@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -51,36 +52,11 @@ class MainActivity : AppCompatActivity() {
         // Location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        // Buttons
-        val emergencyCallButton = findViewById<View>(R.id.emergencyCallButton)
-        val policeCallButton = findViewById<View>(R.id.policeCallButton)
-        val ambulanceCallButton = findViewById<View>(R.id.ambulanceCallButton)
+        // 🗺️ Map Button (on Navigate page)
         val openMapButton = findViewById<View>(R.id.openMapButton)
-        val shareLocationButton = findViewById<View>(R.id.shareLocationButton)
-
-        // 🚨 Emergency Call (Dialer 112)
-        emergencyCallButton.setOnClickListener {
-            val dialIntent = Intent(Intent.ACTION_DIAL).apply { data = Uri.parse("tel:112") }
-            startActivity(dialIntent)
-        }
-        
-        // 🚓 Police Call (Dialer 100)
-        policeCallButton.setOnClickListener {
-            val dialIntent = Intent(Intent.ACTION_DIAL).apply { data = Uri.parse("tel:100") }
-            startActivity(dialIntent)
-        }
-
-        // 🚑 Ambulance Call (Dialer 108)
-        ambulanceCallButton.setOnClickListener {
-            val dialIntent = Intent(Intent.ACTION_DIAL).apply { data = Uri.parse("tel:108") }
-            startActivity(dialIntent)
-        }
-
-        // 🗺️ Check Zone & Open Google Maps
         openMapButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    this, Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
@@ -93,30 +69,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 📍 Share Location via SMS
-        shareLocationButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    LOCATION_PERMISSION_REQUEST
-                )
-            } else {
-                shareLocation()
-            }
+        // 🆘 SOS Page — individual call buttons
+        val dialIntent: (String) -> Unit = { number ->
+            startActivity(Intent(Intent.ACTION_DIAL).apply { data = Uri.parse("tel:$number") })
         }
+        findViewById<View>(R.id.sosCall112).setOnClickListener  { dialIntent("112")  }
+        findViewById<View>(R.id.sosCall100).setOnClickListener  { dialIntent("100")  }
+        findViewById<View>(R.id.sosCall108).setOnClickListener  { dialIntent("108")  }
+        findViewById<View>(R.id.sosCall101).setOnClickListener  { dialIntent("101")  }
+        findViewById<View>(R.id.sosCall1078).setOnClickListener { dialIntent("1078") }
 
         // 🚪 Logout Button
         val logoutButton = findViewById<View>(R.id.logoutButton)
         logoutButton.setOnClickListener {
-            // Sign out from Firebase
             FirebaseAuth.getInstance().signOut()
-            
-            // Sign out from Google (if applicable)
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
             val googleSignInClient = GoogleSignIn.getClient(this, gso)
             googleSignInClient.signOut().addOnCompleteListener {
@@ -127,48 +93,44 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Fetch weather immediately if permission is already granted, else use default
+        // Fetch weather
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    fetchWeather(location.latitude, location.longitude)
-                } else {
-                    fetchWeather(40.7128, -74.0060)
-                }
+                if (location != null) fetchWeather(location.latitude, location.longitude)
+                else fetchWeather(40.7128, -74.0060)
             }
         } else {
             fetchWeather(40.7128, -74.0060)
         }
 
-        // 🌟 Show premium Location Services prompt when UI enters
+        // Show location prompt
         Handler(Looper.getMainLooper()).postDelayed({
-            if (!isDestroyed && !isFinishing) {
-                showLocationPromptDialog()
-            }
+            if (!isDestroyed && !isFinishing) showLocationPromptDialog()
         }, 600)
 
-        // 🟢 Bottom Navigation Logic
+        // ═══ Bottom Navigation — 5 tabs ═══
         val pageDashboard = findViewById<View>(R.id.pageDashboard)
-        val pageNavigate = findViewById<View>(R.id.pageNavigate)
-        val pageAlerts = findViewById<View>(R.id.pageAlerts)
+        val pageNavigate  = findViewById<View>(R.id.pageNavigate)
+        val pageSos       = findViewById<View>(R.id.pageSos)
+        val pageAlerts    = findViewById<View>(R.id.pageAlerts)
         val pageAssistant = findViewById<View>(R.id.pageAssistant)
+
+        val allPages = listOf(pageDashboard, pageNavigate, pageSos, pageAlerts, pageAssistant)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView.setOnItemSelectedListener { item ->
-            pageDashboard.visibility = View.GONE
-            pageNavigate.visibility = View.GONE
-            pageAlerts.visibility = View.GONE
-            pageAssistant.visibility = View.GONE
-
+            allPages.forEach { it.visibility = View.GONE }
             when (item.itemId) {
                 R.id.nav_dashboard -> pageDashboard.visibility = View.VISIBLE
-                R.id.nav_navigate -> pageNavigate.visibility = View.VISIBLE
-                R.id.nav_alerts -> pageAlerts.visibility = View.VISIBLE
+                R.id.nav_navigate  -> pageNavigate.visibility  = View.VISIBLE
+                R.id.nav_sos       -> pageSos.visibility       = View.VISIBLE
+                R.id.nav_alerts    -> pageAlerts.visibility    = View.VISIBLE
                 R.id.nav_assistant -> pageAssistant.visibility = View.VISIBLE
             }
             true
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -287,82 +249,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 🔹 Get location and open SMS app
-    private fun shareLocation() {
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    val lat = location.latitude
-                    val lng = location.longitude
-
-                    val message =
-                        "Emergency! My live location:\nhttps://maps.google.com/?q=$lat,$lng"
-
-                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT, message)
-                    }
-
-                    try {
-                        startActivity(Intent.createChooser(shareIntent, "Share your location"))
-                    } catch (e: Exception) {
-                        Toast.makeText(this@MainActivity, "No apps available to share", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Unable to get location. Turn on GPS.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
-            }
-    }
-
     // 🔹 Permission result
     
     private fun fetchLocationAndOpenMap() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                if (location != null) {
-                    showSafetyDialogAndOpenMap(location.latitude, location.longitude)
-                } else {
-                    Toast.makeText(this, "Unable to get precise location. Using default.", Toast.LENGTH_SHORT).show()
-                    showSafetyDialogAndOpenMap(40.7128, -74.0060)
-                }
-            }.addOnFailureListener {
-                Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
-                showSafetyDialogAndOpenMap(40.7128, -74.0060)
-            }
-        }
-    }
-
-    private fun showSafetyDialogAndOpenMap(lat: Double, lng: Double) {
-        val isSafeZone = listOf(true, false).random()
-        
-        val title = if (isSafeZone) "✅ Safe Zone" else "⚠️ Critical Zone"
-        val message = if (isSafeZone) {
-            "Your current location is marked as clear from immediate disaster threats."
-        } else {
-            "WARNING: Imminent threat detected in your vicinity! Please proceed to safety."
-        }
-
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton("View Map") { _, _ ->
+                val lat = location?.latitude ?: 40.7128
+                val lng = location?.longitude ?: -74.0060
                 val trackingIntent = Intent(this@MainActivity, MapTrackerActivity::class.java).apply {
-                    putExtra("IS_SAFE_ZONE", isSafeZone)
                     putExtra("LATITUDE", lat)
                     putExtra("LONGITUDE", lng)
                 }
                 startActivity(trackingIntent)
+            }.addOnFailureListener {
+                Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
+                val trackingIntent = Intent(this@MainActivity, MapTrackerActivity::class.java).apply {
+                    putExtra("LATITUDE", 40.7128)
+                    putExtra("LONGITUDE", -74.0060)
+                }
+                startActivity(trackingIntent)
             }
-            .setNegativeButton("Dismiss", null)
-            .setCancelable(false)
-            .show()
+        }
     }
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -372,9 +279,7 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (requestCode == LOCATION_PERMISSION_REQUEST) {
-                shareLocation()
-            } else if (requestCode == LOCATION_PERMISSION_MAP_REQUEST) {
+            if (requestCode == LOCATION_PERMISSION_MAP_REQUEST) {
                 fetchLocationAndOpenMap()
             } else if (requestCode == LOCATION_PERMISSION_STARTUP_REQUEST) {
                 restartApp()

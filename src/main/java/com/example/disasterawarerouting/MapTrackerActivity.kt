@@ -36,7 +36,7 @@ class MapTrackerActivity : AppCompatActivity() {
                     
                     .routing-panel {
                         position: absolute;
-                        top: 40px;
+                        top: 10px;
                         left: 50%;
                         transform: translateX(-50%);
                         z-index: 1000;
@@ -92,11 +92,218 @@ class MapTrackerActivity : AppCompatActivity() {
                         cursor: pointer;
                         box-shadow: 0 4px 12px rgba(16,185,129,0.4);
                     }
+                    
+                    .sidebar {
+                        position: absolute;
+                        top: 140px;
+                        left: 10px;
+                        width: 260px;
+                        background: rgba(255, 255, 255, 0.95);
+                        z-index: 1000;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                        display: none;
+                        flex-direction: column;
+                        max-height: calc(100vh - 130px);
+                        font-family: sans-serif;
+                    }
+                    .sidebar-header {
+                        padding: 12px;
+                        border-bottom: 1px solid #E2E8F0;
+                        background: #F8FAFC;
+                        border-top-left-radius: 12px;
+                        border-top-right-radius: 12px;
+                    }
+                    .sidebar-header h3 {
+                        margin: 0;
+                        font-size: 15px;
+                        color: #1E293B;
+                    }
+                    .sidebar-header p {
+                        margin: 2px 0 0 0;
+                        font-size: 12px;
+                        color: #64748B;
+                    }
+                    .sidebar-content {
+                        overflow-y: auto;
+                        padding-bottom: 8px;
+                    }
+                    .alert-item {
+                        padding: 12px;
+                        border-bottom: 1px solid #F1F5F9;
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    }
+                    .alert-item:last-child {
+                        border-bottom: none;
+                    }
+                    .alert-icon {
+                        width: 28px;
+                        height: 28px;
+                        border-radius: 50%;
+                        background: #DC2626;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 14px;
+                        box-shadow: 0 2px 5px rgba(220, 38, 38, 0.3);
+                    }
+                    .alert-text h4 {
+                        margin: 0;
+                        font-size: 13px;
+                        color: #334155;
+                        font-weight: 600;
+                    }
+                    .alert-text p {
+                        margin: 2px 0 0 0;
+                        font-size: 11px;
+                        color: #64748B;
+                    }
+                    
+                    .custom-modal {
+                        position: fixed;
+                        top: 0; left: 0; width: 100vw; height: 100vh;
+                        background: rgba(0,0,0,0.5);
+                        z-index: 9999;
+                        display: none;
+                        justify-content: center;
+                        align-items: center;
+                        backdrop-filter: blur(4px);
+                    }
+                    .modal-content {
+                        background: white;
+                        padding: 30px;
+                        border-radius: 20px;
+                        width: 85%;
+                        max-width: 320px;
+                        text-align: center;
+                        box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+                        font-family: sans-serif;
+                    }
+                    .modal-icon {
+                        font-size: 55px;
+                        margin-bottom: 12px;
+                    }
+                    .modal-content h3 {
+                        margin: 0 0 10px 0;
+                        color: #DC2626;
+                        font-size: 22px;
+                        font-weight: 800;
+                    }
+                    .modal-content p {
+                        color: #475569;
+                        font-size: 15px;
+                        margin-bottom: 25px;
+                        line-height: 1.5;
+                        font-weight: 600;
+                    }
+                    .modal-btn {
+                        background: #DC2626;
+                        color: white;
+                        border: none;
+                        padding: 14px 24px;
+                        border-radius: 12px;
+                        font-weight: bold;
+                        width: 100%;
+                        cursor: pointer;
+                        font-size: 16px;
+                        margin-top: 4px;
+                    }
+                    .modal-btn-outline {
+                        background: transparent;
+                        color: #64748B;
+                        border: 2px solid #E2E8F0;
+                        padding: 12px 24px;
+                        border-radius: 12px;
+                        font-weight: bold;
+                        width: 100%;
+                        cursor: pointer;
+                        font-size: 15px;
+                        margin-top: 10px;
+                    }
+                    .loc-modal {
+                        position: fixed;
+                        top: 0; left: 0; width: 100vw; height: 100vh;
+                        background: rgba(0,0,0,0.45);
+                        z-index: 9999;
+                        display: none;
+                        justify-content: center;
+                        align-items: center;
+                        backdrop-filter: blur(4px);
+                    }
+                    .loc-modal-content {
+                        background: white;
+                        padding: 28px 24px 20px;
+                        border-radius: 22px;
+                        width: 85%;
+                        max-width: 320px;
+                        text-align: center;
+                        box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+                        font-family: sans-serif;
+                    }
+                    .loc-modal-icon { font-size: 50px; margin-bottom: 10px; }
+                    .loc-modal-content h3 {
+                        margin: 0 0 8px 0;
+                        color: #0F172A;
+                        font-size: 20px;
+                        font-weight: 800;
+                    }
+                    .loc-modal-content p {
+                        color: #64748B;
+                        font-size: 14px;
+                        margin-bottom: 20px;
+                        line-height: 1.5;
+                    }
+                    .loc-btn-yes {
+                        background: linear-gradient(135deg, #10B981, #059669);
+                        color: white;
+                        border: none;
+                        padding: 14px 24px;
+                        border-radius: 12px;
+                        font-weight: bold;
+                        width: 100%;
+                        cursor: pointer;
+                        font-size: 16px;
+                        box-shadow: 0 4px 12px rgba(16,185,129,0.35);
+                    }
+                    .loc-btn-no {
+                        background: transparent;
+                        color: #94A3B8;
+                        border: 1.5px solid #E2E8F0;
+                        padding: 12px 24px;
+                        border-radius: 12px;
+                        font-weight: 600;
+                        width: 100%;
+                        cursor: pointer;
+                        font-size: 15px;
+                        margin-top: 10px;
+                    }
                 </style>
             </head>
             <body>
                 <div id="map"></div>
                 
+                <div class="custom-modal" id="dangerModal">
+                    <div class="modal-content">
+                        <div class="modal-icon">⚠️</div>
+                        <h3 id="modalTitle">CAUTION</h3>
+                        <p id="modalMessage">You are charting a course into or through a Danger Zone. Please exercise extreme caution!</p>
+                        <button class="modal-btn" onclick="document.getElementById('dangerModal').style.display='none'">I Understand</button>
+                    </div>
+                </div>
+
+                <!-- Custom Location Prompt Modal -->
+                <div class="loc-modal" id="locModal">
+                    <div class="loc-modal-content">
+                        <div class="loc-modal-icon">📍</div>
+                        <h3>Use My Location?</h3>
+                        <p>Set your current GPS location as the starting point for the route.</p>
+                        <button class="loc-btn-yes" id="locYesBtn">✅ Yes, Use My Location</button>
+                        <button class="loc-btn-no" onclick="document.getElementById('locModal').style.display='none'">No, I'll type it</button>
+                    </div>
+                </div>
+
                 <!-- Routing Panel UI -->
                 <div class="routing-panel">
                     <div class="input-group">
@@ -112,8 +319,22 @@ class MapTrackerActivity : AppCompatActivity() {
                     <button class="go-btn" onclick="drawDynamicSafeRoute()">GO</button>
                 </div>
 
+                <!-- Add delay sidebar -->
+                <div class="sidebar" id="delaySidebar">
+                    <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <h3>Delays & Alerts</h3>
+                            <p>Route conditions ahead</p>
+                        </div>
+                        <button onclick="document.getElementById('delaySidebar').style.display='none'" style="background:none;border:none;font-size:24px;color:#94a3b8;cursor:pointer;padding:0;line-height:0.8;font-weight:bold;">&times;</button>
+                    </div>
+                    <div class="sidebar-content" id="delaySidebarContent">
+                        <!-- Populated randomly by JS -->
+                    </div>
+                </div>
+
                 <script>
-                    var map = L.map('map').setView([$lat, $lng], 8);
+                    var map = L.map('map', { zoomControl: false }).setView([$lat, $lng], 8);
                     
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         maxZoom: 19,
@@ -138,10 +359,12 @@ class MapTrackerActivity : AppCompatActivity() {
                         circle.bindPopup('<b>SAFE ZONE: ' + name + '</b><br>📍 Center is ' + dist + ' km away');
                     }
                     
+                    var disasterZones = [];
                     function addDisasterZone(dLat, dLng, name, radius) {
                         var dist = getDistance($lat, $lng, dLat, dLng);
                         var circle = L.circle([dLat, dLng], { color: 'red', fillColor: '#DC2626', fillOpacity: 0.5, radius: radius }).addTo(map);
                         circle.bindPopup('<b>DANGER: ' + name + '</b><br>📍 ' + dist + ' km away');
+                        disasterZones.push({lat: dLat, lng: dLng, name: name, radius: radius});
                     }
 
                     function addPOI(pLat, pLng, type, name) {
@@ -149,6 +372,37 @@ class MapTrackerActivity : AppCompatActivity() {
                         var prefix = type === 'hospital' ? "🏥 Hospital" : "🚓 Police Station";
                         var marker = L.marker([pLat, pLng], { icon: icon }).addTo(map);
                         marker.bindPopup("<b>" + prefix + "</b><br>" + name);
+                    }
+
+                    function generateRandomDelays() {
+                        var allOptions = [
+                            { icon: "⚠️", bg: "#DC2626", title: "Speedbreaker Ahead", desc: "In 8m" },
+                            { icon: "⚠️", bg: "#F59E0B", title: "Speedbreaker Ahead", desc: "In 25m" },
+                            { icon: "🚗", bg: "#DC2626", title: "Slowdown on Expressway", desc: Math.floor(Math.random()*15+5) + "-min delay" },
+                            { icon: "🚗", bg: "#DC2626", title: "Heavy Traffic", desc: Math.floor(Math.random()*10+10) + "-min delay" },
+                            { icon: "🚗", bg: "#F59E0B", title: "Slowdown on Main Rd", desc: Math.floor(Math.random()*8+3) + "-min delay" },
+                            { icon: "🚧", bg: "#F59E0B", title: "Road Construction", desc: "Lane closed" },
+                            { icon: "🚧", bg: "#F59E0B", title: "Pothole Repair", desc: "Near intersection" },
+                            { icon: "🌧️", bg: "#3B82F6", title: "Slippery Road", desc: "Due to recent rain" },
+                            { icon: "🛑", bg: "#DC2626", title: "Accident Ahead", desc: "Right lane blocked" }
+                        ];
+                        
+                        var shuffled = allOptions.sort(function() { return 0.5 - Math.random() });
+                        var numItems = Math.floor(Math.random() * 3) + 2; 
+                        var contentHtml = "";
+                        
+                        for(var i=0; i<numItems; i++) {
+                            var item = shuffled[i];
+                            contentHtml += '<div class="alert-item">' +
+                                '<div class="alert-icon" style="background:' + item.bg + '">' + item.icon + '</div>' +
+                                '<div class="alert-text">' +
+                                    '<h4>' + item.title + '</h4>' +
+                                    '<p>' + item.desc + '</p>' +
+                                '</div>' +
+                            '</div>';
+                        }
+                        var el = document.getElementById("delaySidebarContent");
+                        if(el) el.innerHTML = contentHtml;
                     }
 
                     // --- 1. My Current Location ---
@@ -162,10 +416,13 @@ class MapTrackerActivity : AppCompatActivity() {
                     function promptMyLocation(el) {
                         if (el.dataset.prompted) return;
                         el.dataset.prompted = "true";
-                        if (confirm("Use your current location for the starting point?")) {
+                        el.blur();
+                        var modal = document.getElementById("locModal");
+                        modal.style.display = "flex";
+                        document.getElementById("locYesBtn").onclick = function() {
                             el.value = "$lat, $lng";
-                            el.blur(); // Prevent keyboard from covering if they accept
-                        }
+                            modal.style.display = "none";
+                        };
                     }
 
                     async function geocode(city) {
@@ -183,78 +440,138 @@ class MapTrackerActivity : AppCompatActivity() {
                         return null;
                     }
 
+                    // ---- HELPER: Fetch OSRM route (used only for clean routes) ----
+                    async function fetchOSRMRoute(from, to) {
+                        var coordStr = from[1] + "," + from[0] + ";" + to[1] + "," + to[0];
+                        try {
+                            var res = await fetch("https://router.project-osrm.org/route/v1/driving/" + coordStr + "?overview=full&geometries=geojson");
+                            var data = await res.json();
+                            if(data && data.routes && data.routes.length > 0) {
+                                return data.routes[0].geometry.coordinates.map(function(c){ return [c[1], c[0]]; });
+                            }
+                        } catch(e) { console.error("OSRM error:", e); }
+                        return null;
+                    }
+
+                    // ---- HELPER: Check if any point in a path is inside any zone ----
+                    function pathHitsAnyZone(pts) {
+                        for(var j = 0; j < pts.length; j++) {
+                            for(var k = 0; k < disasterZones.length; k++) {
+                                var dz = disasterZones[k];
+                                if(getDistance(pts[j][0], pts[j][1], dz.lat, dz.lng) <= (dz.radius / 1000)) {
+                                    return true;
+                                }
+                            }
+                        }
+                        return false;
+                    }
+
+                    // ---- HELPER: Force-field deflection — push sampled points away from all zones ----
+                    function computeDeflectedRoute(from, to) {
+                        var N = 80; // sample resolution
+                        var SAFE_BUFFER_KM = 35; // push at least this far outside zone radius
+                        var pts = [];
+
+                        for(var step = 0; step <= N; step++) {
+                            var t = step / N;
+                            var lat = from[0] + t * (to[0] - from[0]);
+                            var lon = from[1] + t * (to[1] - from[1]);
+
+                            // Accumulate deflection from every nearby zone
+                            var defLat = 0, defLon = 0;
+                            for(var k = 0; k < disasterZones.length; k++) {
+                                var dz = disasterZones[k];
+                                var safeKm = (dz.radius / 1000) + SAFE_BUFFER_KM;
+                                var d = getDistance(lat, lon, dz.lat, dz.lng);
+                                if(d < safeKm) {
+                                    // Vector FROM zone center to current point
+                                    var vLat = lat - dz.lat;
+                                    var vLon = lon - dz.lng;
+                                    var vLen = Math.sqrt(vLat*vLat + vLon*vLon);
+                                    if(vLen < 0.001) { vLat = 0.01; vLon = 0.01; vLen = 0.014; }
+                                    // Strength: stronger when closer to center
+                                    var strength = (safeKm - d) / safeKm;
+                                    var pushDeg = strength * safeKm * 0.009;
+                                    defLat += (vLat / vLen) * pushDeg;
+                                    defLon += (vLon / vLen) * pushDeg;
+                                }
+                            }
+                            pts.push([lat + defLat, lon + defLon]);
+                        }
+                        return pts;
+                    }
+
                     async function drawDynamicSafeRoute() {
-                        var fromStr = document.getElementById("fromLoc").value;
-                        var toStr = document.getElementById("toLoc").value;
+                        var fromStr = document.getElementById("fromLoc").value.trim();
+                        var toStr   = document.getElementById("toLoc").value.trim();
                         if(!fromStr || !toStr) { alert("Please enter both locations."); return; }
 
                         var btn = document.querySelector(".go-btn");
                         btn.innerHTML = "⏳";
-                        
+
                         var fromCoords = await geocode(fromStr);
-                        var toCoords = await geocode(toStr);
-                        
+                        var toCoords   = await geocode(toStr);
+
                         if(!fromCoords || !toCoords) {
                             btn.innerHTML = "GO";
-                            alert("Could not locate one or both places. Try using a well-known city name.");
+                            alert("Could not locate one or both places. Try a well-known city name.");
                             return;
                         }
 
-                        if(currentRouteLine) { map.removeLayer(currentRouteLine); }
-                        dynamicRouteMarkers.forEach(m => map.removeLayer(m));
+                        // Clear old route
+                        if(currentRouteLine) { map.removeLayer(currentRouteLine); currentRouteLine = null; }
+                        dynamicRouteMarkers.forEach(function(m){ map.removeLayer(m); });
                         dynamicRouteMarkers = [];
-                        
-                        // Default Fallback Evacuation Route curving outwards (if no roads exist)
-                        var dLat = toCoords[0] - fromCoords[0];
-                        var dLon = toCoords[1] - fromCoords[1];
-                        var midLat = (fromCoords[0] + toCoords[0]) / 2;
-                        var midLon = (fromCoords[1] + toCoords[1]) / 2;
-                        
-                        var offsetLat = midLat - (dLon * 0.25);
-                        var offsetLon = midLon + (dLat * 0.25);
 
-                        var waypoints = [
-                            fromCoords, 
-                            [fromCoords[0] + dLat*0.15, fromCoords[1] + dLon*0.15],
-                            [offsetLat, offsetLon], 
-                            [toCoords[0] - dLat*0.15, toCoords[1] - dLon*0.15],
-                            toCoords
-                        ];
-
-                        // Attempt to fetch Real-World Driving Route via OpenStreetMap OSRM
-                        try {
-                            btn.innerHTML = "🛣️";
-                            // OSRM expects lon,lat format
-                            var routeRes = await fetch("https://router.project-osrm.org/route/v1/driving/" + fromCoords[1] + "," + fromCoords[0] + ";" + toCoords[1] + "," + toCoords[0] + "?overview=full&geometries=geojson");
-                            var routeData = await routeRes.json();
-                            
-                            if(routeData && routeData.routes && routeData.routes.length > 0) {
-                                // Extract the real road coordinates
-                                var gjCoords = routeData.routes[0].geometry.coordinates;
-                                // Convert [lon, lat] from GeoJSON into Leaflet's [lat, lon]
-                                waypoints = gjCoords.map(function(c) { return [c[1], c[0]]; });
+                        // Block if DESTINATION itself is inside a red zone
+                        for(var i = 0; i < disasterZones.length; i++) {
+                            var dz = disasterZones[i];
+                            if(getDistance(toCoords[0], toCoords[1], dz.lat, dz.lng) <= (dz.radius / 1000)) {
+                                btn.innerHTML = "GO";
+                                document.getElementById("modalMessage").innerText =
+                                    "Your destination is inside Danger Zone: " + dz.name + ". Cannot plan a safe route there.";
+                                document.getElementById("dangerModal").style.display = "flex";
+                                return;
                             }
-                        } catch(e) {
-                            console.error("OSRM Route Failed, using fallback curve.", e);
                         }
-                        
+
+                        btn.innerHTML = "🛣️";
+
+                        // Step 1: Try real OSRM route
+                        var osrmRoute = await fetchOSRMRoute(fromCoords, toCoords);
+
+                        var finalWaypoints;
+                        if(osrmRoute && !pathHitsAnyZone(osrmRoute)) {
+                            // OSRM route is clean — use it directly (real roads)
+                            finalWaypoints = osrmRoute;
+                        } else {
+                            // OSRM route passes through a zone (or failed) — 
+                            // Use force-field deflection to compute a safe visual path
+                            finalWaypoints = computeDeflectedRoute(fromCoords, toCoords);
+                        }
+
+                        // Show delays panel
+                        generateRandomDelays();
+                        var sd = document.getElementById("delaySidebar");
+                        if(sd) sd.style.display = "flex";
+
                         btn.innerHTML = "GO";
-                        
-                        currentRouteLine = L.polyline(waypoints, {
-                            color: '#3B82F6', // Neon bright blue route
-                            weight: 6,
-                            opacity: 0.9,
-                            dashArray: '12, 12',
-                            lineJoin: 'round'
+
+                        currentRouteLine = L.polyline(finalWaypoints, {
+                            color: '#3B82F6',
+                            weight: 5,
+                            opacity: 0.95,
+                            lineJoin: 'round',
+                            lineCap: 'round'
                         }).addTo(map);
-                        
-                        currentRouteLine.bindTooltip('<b>✅ Safest Path</b>', {permanent: true, direction: 'center'}).openTooltip();
-                        
-                        var m1 = L.marker(fromCoords).addTo(map).bindPopup('<b>Start: </b>' + fromStr).openPopup();
-                        var m2 = L.marker(toCoords).addTo(map).bindPopup('<b>Destination: </b>' + toStr);
+
+                        currentRouteLine.bindTooltip('<b>✅ Safest Route</b>', { sticky: true });
+
+                        var m1 = L.marker(fromCoords).addTo(map).bindPopup('<b>🟢 Start:</b> ' + fromStr).openPopup();
+                        var m2 = L.marker(toCoords).addTo(map).bindPopup('<b>📍 Destination:</b> ' + toStr);
                         dynamicRouteMarkers.push(m1, m2);
-                        
-                        map.fitBounds(currentRouteLine.getBounds(), { padding: [50, 50] });
+
+                        map.fitBounds(currentRouteLine.getBounds(), { padding: [60, 60] });
                     }
 
                     // --- 2. Exactly 2 Green Zones ---

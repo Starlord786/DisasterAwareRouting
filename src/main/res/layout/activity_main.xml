@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_aurora_wide">
 
+    <!-- Aurora animated background -->
     <View
         android:id="@+id/auroraBackground"
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <!-- Page content area — fills between top and bottom nav -->
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -23,14 +25,16 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        
+
         <include layout="@layout/layout_dashboard" android:id="@+id/pageDashboard" android:visibility="visible"/>
-        <include layout="@layout/layout_navigate" android:id="@+id/pageNavigate" android:visibility="gone"/>
-        <include layout="@layout/layout_alerts" android:id="@+id/pageAlerts" android:visibility="gone"/>
-        <include layout="@layout/layout_assistant" android:id="@+id/pageAssistant" android:visibility="gone"/>
+        <include layout="@layout/layout_navigate"  android:id="@+id/pageNavigate"   android:visibility="gone"/>
+        <include layout="@layout/layout_sos"       android:id="@+id/pageSos"        android:visibility="gone"/>
+        <include layout="@layout/layout_alerts"    android:id="@+id/pageAlerts"     android:visibility="gone"/>
+        <include layout="@layout/layout_assistant" android:id="@+id/pageAssistant"  android:visibility="gone"/>
 
     </FrameLayout>
 
+    <!-- Bottom Navigation — taller to prevent icon/text collision on 5 items -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
@@ -40,7 +44,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_nav_menu"
         android:background="#FFFFFF"
-        app:itemIconTint="@color/bottom_nav_color"
-        app:itemTextColor="@color/bottom_nav_color"/>
-        
+        app:itemIconTint="@color/bottom_nav_icon_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:itemIconSize="22dp"
+        app:labelVisibilityMode="labeled"
+        app:elevation="8dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

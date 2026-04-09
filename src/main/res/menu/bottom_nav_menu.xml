@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_nav_navigate"
         android:title="Navigate"/>
     <item
+        android:id="@+id/nav_sos"
+        android:icon="@drawable/ic_sos"
+        android:title="SOS"/>
+    <item
         android:id="@+id/nav_alerts"
         android:icon="@drawable/ic_nav_alerts"
         android:title="Alerts"/>
