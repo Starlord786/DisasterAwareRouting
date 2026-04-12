@@ -1,54 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F8FAFC">
+    android:background="#FAFAFA">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ═══ HEADER GRADIENT BANNER ═══ -->
+        <!-- ═══ HEADER BANNER ═══ -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#1E1B4B"
+            android:background="#FFFFFF"
             android:padding="24dp"
             android:paddingTop="48dp"
-            android:paddingBottom="32dp">
+            android:paddingBottom="28dp"
+            android:elevation="2dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="👋 Welcome Back"
-                android:textColor="#A5B4FC"
-                android:textSize="14sp"
-                android:letterSpacing="0.08"
-                android:layout_marginBottom="4dp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    
+                    <TextView
+                        android:id="@+id/userNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="👋 Welcome Back,"
+                        android:textColor="#3B82F6"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="4dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Real-time Status"
-                android:textColor="#FFFFFF"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                android:letterSpacing="-0.01"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Area Overview"
+                        android:textColor="#0F172A"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="-0.01"/>
+                </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Your local safety overview"
-                android:textColor="#94A3B8"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp"/>
+            </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="20dp"
+            android:text="Local Status"
+            android:textColor="#64748B"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:textAllCaps="true"/>
 
         <!-- ═══ STAT CARDS ═══ -->
         <LinearLayout
@@ -56,7 +78,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp"
-            android:paddingTop="24dp">
+            android:paddingTop="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,34 +92,46 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="20dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
                     app:cardBackgroundColor="#FEF2F2"
-                    app:strokeWidth="0dp">
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#FECACA">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="18dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔴"
-                            android:textSize="24sp"
-                            android:layout_marginBottom="8dp"/>
+                        android:padding="20dp"
+                        android:gravity="center">
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardBackgroundColor="#FCA5A5"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            android:layout_marginBottom="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🔴"
+                                android:textSize="22sp"
+                                android:layout_gravity="center"/>
+                        </com.google.android.material.card.MaterialCardView>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3"
-                            android:textColor="#DC2626"
-                            android:textSize="34sp"
+                            android:textColor="#991B1B"
+                            android:textSize="32sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Active Disasters"
-                            android:textColor="#991B1B"
+                            android:text="Active Alerts"
+                            android:textColor="#DC2626"
                             android:textSize="13sp"
+                            android:textStyle="bold"
                             android:layout_marginTop="2dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -108,34 +142,46 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    app:cardCornerRadius="20dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="#ECFDF5"
-                    app:strokeWidth="0dp">
+                    app:cardBackgroundColor="#F0FDF4"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#D1FAE5">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="18dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🏥"
-                            android:textSize="24sp"
-                            android:layout_marginBottom="8dp"/>
+                        android:padding="20dp"
+                        android:gravity="center">
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardBackgroundColor="#A7F3D0"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            android:layout_marginBottom="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🏥"
+                                android:textSize="22sp"
+                                android:layout_gravity="center"/>
+                        </com.google.android.material.card.MaterialCardView>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="12"
-                            android:textColor="#059669"
-                            android:textSize="34sp"
+                            android:textColor="#065F46"
+                            android:textSize="32sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Hospitals Nearby"
-                            android:textColor="#065F46"
+                            android:text="Hospitals Near"
+                            android:textColor="#059669"
                             android:textSize="13sp"
+                            android:textStyle="bold"
                             android:layout_marginTop="2dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -154,34 +200,46 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="20dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="#EEF2FF"
-                    app:strokeWidth="0dp">
+                    app:cardBackgroundColor="#F5F8FF"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E0E7FF">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="18dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🚓"
-                            android:textSize="24sp"
-                            android:layout_marginBottom="8dp"/>
+                        android:padding="20dp"
+                        android:gravity="center">
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardBackgroundColor="#C7D2FE"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            android:layout_marginBottom="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🚓"
+                                android:textSize="22sp"
+                                android:layout_gravity="center"/>
+                        </com.google.android.material.card.MaterialCardView>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="5"
-                            android:textColor="#4F46E5"
-                            android:textSize="34sp"
+                            android:textColor="#3730A3"
+                            android:textSize="32sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Police Stations"
-                            android:textColor="#3730A3"
+                            android:textColor="#4F46E5"
                             android:textSize="13sp"
+                            android:textStyle="bold"
                             android:layout_marginTop="2dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -192,34 +250,46 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
-                    app:cardCornerRadius="20dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
-                    app:cardBackgroundColor="#F0FDF4"
-                    app:strokeWidth="0dp">
+                    app:cardBackgroundColor="#FFFBEB"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#FEF3C7">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="18dp">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🟢"
-                            android:textSize="24sp"
-                            android:layout_marginBottom="8dp"/>
+                        android:padding="20dp"
+                        android:gravity="center">
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            app:cardCornerRadius="16dp"
+                            app:cardBackgroundColor="#FDE68A"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            android:layout_marginBottom="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🛡️"
+                                android:textSize="22sp"
+                                android:layout_gravity="center"/>
+                        </com.google.android.material.card.MaterialCardView>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="8"
-                            android:textColor="#16A34A"
-                            android:textSize="34sp"
+                            android:textColor="#92400E"
+                            android:textSize="32sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Safe Zones"
-                            android:textColor="#166534"
+                            android:textColor="#D97706"
                             android:textSize="13sp"
+                            android:textStyle="bold"
                             android:layout_marginTop="2dp"/>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -230,22 +300,34 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#1E1B4B"
-                app:strokeWidth="0dp">
+                app:cardBackgroundColor="#F1F5F9"
+                app:strokeWidth="1dp"
+                app:strokeColor="#E2E8F0">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="20dp"
                     android:gravity="center_vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="💡"
-                        android:textSize="30sp"
-                        android:layout_marginEnd="16dp"/>
+                    
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:cardCornerRadius="24dp"
+                        app:cardBackgroundColor="#FFFFFF"
+                        app:cardElevation="2dp"
+                        app:strokeWidth="0dp"
+                        android:layout_marginEnd="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💡"
+                            android:textSize="24sp"
+                            android:layout_gravity="center"/>
+                    </com.google.android.material.card.MaterialCardView>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -253,17 +335,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Safety Tip"
-                            android:textColor="#A5B4FC"
-                            android:textSize="12sp"
+                            android:text="DAILY SAFETY TIP"
+                            android:textColor="#3B82F6"
+                            android:textStyle="bold"
+                            android:textSize="11sp"
                             android:letterSpacing="0.1"
                             android:layout_marginBottom="4dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Always keep an emergency kit with water, food and first aid for at least 3 days."
-                            android:textColor="#E2E8F0"
-                            android:textSize="14sp"
+                            android:text="Keep an emergency kit ready with water, food and first aid for 72 hours."
+                            android:textColor="#334155"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
                             android:lineSpacingExtra="3dp"/>
                     </LinearLayout>
                 </LinearLayout>

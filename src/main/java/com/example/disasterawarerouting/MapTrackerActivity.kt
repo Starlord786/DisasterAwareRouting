@@ -22,6 +22,11 @@ class MapTrackerActivity : AppCompatActivity() {
         // Use real coordinates passed from MainActivity, or fallback
         val lat = intent.getDoubleExtra("LATITUDE", 40.7128)
         val lng = intent.getDoubleExtra("LONGITUDE", -74.0060)
+        val targetResourceName = intent.getStringExtra("TARGET_RESOURCE_NAME")
+        
+        // Use a small offset so the resource is placed near but not exactly on top of user
+        val targetLatStr = if (targetResourceName != null) (lat + 0.08).toString() else "null"
+        val targetLngStr = if (targetResourceName != null) (lng + 0.08).toString() else "null"
 
         val htmlContent = """
             <!DOCTYPE html>
@@ -29,7 +34,9 @@ class MapTrackerActivity : AppCompatActivity() {
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
                 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiXrATylJKiIEqdeM_M8oKb0Ona3dnIAk"></script>
                 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                <script src="https://unpkg.com/leaflet.gridlayer.googlemutant@latest/dist/Leaflet.GoogleMutant.js"></script>
                 <style>
                     body { padding: 0; margin: 0; font-family: sans-serif; }
                     html, body, #map { height: 100vh; width: 100vw; }
@@ -279,10 +286,42 @@ class MapTrackerActivity : AppCompatActivity() {
                         font-size: 15px;
                         margin-top: 10px;
                     }
+                    .map-toggle {
+                        position: absolute;
+                        bottom: 30px;
+                        right: 15px;
+                        background: rgba(255, 255, 255, 0.95);
+                        z-index: 1000;
+                        border-radius: 20px;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                        display: flex;
+                        overflow: hidden;
+                    }
+                    .toggle-btn {
+                        padding: 10px 16px;
+                        font-weight: 800;
+                        font-size: 13px;
+                        color: #64748B;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        border-right: 1px solid #E2E8F0;
+                    }
+                    .toggle-btn:last-child {
+                        border-right: none;
+                    }
+                    .toggle-btn.active {
+                        background: #3B82F6;
+                        color: white;
+                    }
                 </style>
             </head>
             <body>
                 <div id="map"></div>
+                
+                <div class="map-toggle">
+                    <div class="toggle-btn active" id="btn-road" onclick="setMapType('road')">🗺️ Street</div>
+                    <div class="toggle-btn" id="btn-sat" onclick="setMapType('sat')">🛰️ Satellite</div>
+                </div>
                 
                 <div class="custom-modal" id="dangerModal">
                     <div class="modal-content">
@@ -336,14 +375,37 @@ class MapTrackerActivity : AppCompatActivity() {
                 <script>
                     var map = L.map('map', { zoomControl: false }).setView([$lat, $lng], 8);
                     
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '© OpenStreetMap components'
-                    }).addTo(map);
+                    var roadMap = L.gridLayer.googleMutant({
+                        type: 'roadmap',
+                        maxZoom: 20
+                    });
+                    
+                    var satelliteMap = L.gridLayer.googleMutant({
+                        type: 'satellite',
+                        maxZoom: 20
+                    });
+
+                    // Add default map layer
+                    roadMap.addTo(map);
+
+                    function setMapType(type) {
+                        if (type === 'road') {
+                            map.removeLayer(satelliteMap);
+                            map.addLayer(roadMap);
+                            document.getElementById('btn-road').classList.add('active');
+                            document.getElementById('btn-sat').classList.remove('active');
+                        } else {
+                            map.removeLayer(roadMap);
+                            map.addLayer(satelliteMap);
+                            document.getElementById('btn-sat').classList.add('active');
+                            document.getElementById('btn-road').classList.remove('active');
+                        }
+                    }
 
                     // Add Custom Icons
                     var policeIcon = L.divIcon({ html: '<div style="font-size: 22px; text-shadow: 1px 1px 2px white;">🚓</div>', className: 'custom-icon', iconSize: [24,24], iconAnchor: [12,12] });
                     var hospitalIcon = L.divIcon({ html: '<div style="font-size: 22px; text-shadow: 1px 1px 2px white;">🏥</div>', className: 'custom-icon', iconSize: [24,24], iconAnchor: [12,12] });
+                    var resourceIcon = L.divIcon({ html: '<div style="font-size: 26px; text-shadow: 1px 1px 3px black;">📦</div>', className: 'custom-icon', iconSize: [28,28], iconAnchor: [14,14] });
                     
                     function getDistance(lat1, lon1, lat2, lon2) {
                         var R = 6371; // km
@@ -368,8 +430,8 @@ class MapTrackerActivity : AppCompatActivity() {
                     }
 
                     function addPOI(pLat, pLng, type, name) {
-                        var icon = type === 'hospital' ? hospitalIcon : policeIcon;
-                        var prefix = type === 'hospital' ? "🏥 Hospital" : "🚓 Police Station";
+                        var icon = type === 'hospital' ? hospitalIcon : (type === 'resource' ? resourceIcon : policeIcon);
+                        var prefix = type === 'hospital' ? "🏥 Hospital" : (type === 'resource' ? "📦 Resource" : "🚓 Police Station");
                         var marker = L.marker([pLat, pLng], { icon: icon }).addTo(map);
                         marker.bindPopup("<b>" + prefix + "</b><br>" + name);
                     }
@@ -567,18 +629,48 @@ class MapTrackerActivity : AppCompatActivity() {
 
                         currentRouteLine.bindTooltip('<b>✅ Safest Route</b>', { sticky: true });
 
-                        var m1 = L.marker(fromCoords).addTo(map).bindPopup('<b>🟢 Start:</b> ' + fromStr).openPopup();
-                        var m2 = L.marker(toCoords).addTo(map).bindPopup('<b>📍 Destination:</b> ' + toStr);
+                        var destIcon = L.divIcon({
+                            html: '<div style="background-color:#10B981; border: 3px solid white; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🏁</div>',
+                            className: 'custom-route-dest',
+                            iconSize: [28,28],
+                            iconAnchor: [14,28]
+                        });
+                        var startIcon = L.divIcon({
+                            html: '<div style="background-color:#2563EB; border: 3px solid white; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 16px;">🟢</div>',
+                            className: 'custom-route-start',
+                            iconSize: [28,28],
+                            iconAnchor: [14,28]
+                        });
+
+                        var m1 = L.marker(fromCoords, {icon: startIcon}).addTo(map).bindPopup('<b>🟢 Start:</b> ' + fromStr).openPopup();
+                        var m2 = L.marker(toCoords, {icon: destIcon}).addTo(map).bindPopup('<b>📍 Destination:</b> ' + toStr);
                         dynamicRouteMarkers.push(m1, m2);
 
                         map.fitBounds(currentRouteLine.getBounds(), { padding: [60, 60] });
                     }
 
-                    // --- 2. Exactly 2 Green Zones ---
-                    // Zone 1: Center is safely offset (~15km away), but massive radius (25km) completely overlaps the user's location seamlessly!
-                    addSafeZone($lat + 0.1, $lng - 0.1, "Primary Relief Camp", 25000); 
-                    // Zone 2: Far away safe zone (~200+ km away)
-                    addSafeZone($lat - 1.8, $lng + 1.6, "Secondary Evacuation Center", 20000);
+                    // --- TARGET RESOURCE LOGIC ---
+                    var targetResourceName = "$targetResourceName";
+                    if (targetResourceName && targetResourceName !== "null") {
+                        var targetLat = $targetLatStr;
+                        var targetLng = $targetLngStr;
+                        // Place a massive green zone around the resource
+                        addSafeZone(targetLat, targetLng, targetResourceName, 20000);
+                        addPOI(targetLat, targetLng, 'resource', targetResourceName);
+
+                        // Auto-draw route
+                        setTimeout(function() {
+                            document.getElementById("fromLoc").value = $lat + ", " + $lng;
+                            document.getElementById("toLoc").value = targetLat + ", " + targetLng;
+                            drawDynamicSafeRoute();
+                        }, 800);
+                    } else {
+                        // --- 2. Exactly 2 Green Zones ---
+                        // Zone 1: Center is safely offset (~15km away), but massive radius (25km) completely overlaps the user's location seamlessly!
+                        addSafeZone($lat + 0.1, $lng - 0.1, "Primary Relief Camp", 25000); 
+                        // Zone 2: Far away safe zone (~200+ km away)
+                        addSafeZone($lat - 1.8, $lng + 1.6, "Secondary Evacuation Center", 20000);
+                    }
 
                     // --- 3. Dummy Hospitals & Police Stations near my location ---
                     addPOI($lat + 0.02, $lng + 0.03, 'hospital', 'City General Hospital');

@@ -46,10 +46,9 @@ dependencies {
     // 🔥 Google Play Services Location (FIXED)
     implementation(libs.play.services.location)
 
-    // 🔥 Firebase and Google Authentication
+    // 🔥 Firebase Authentication
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-    implementation(libs.play.services.auth)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

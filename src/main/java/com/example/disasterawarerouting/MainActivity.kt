@@ -15,8 +15,6 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import android.os.Handler
@@ -39,6 +37,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // 👤 Fetch User Name and greet them
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userName = currentUser?.displayName?.takeIf { it.isNotBlank() }
+            ?: currentUser?.email?.substringBefore("@")
+            ?: "User"
+        findViewById<android.widget.TextView>(R.id.userNameText)?.text = "👋 Welcome Back, $userName"
 
         // Subtle aurora pulse animation (alpha only — no sliding to avoid white flash)
         val auroraBg = findViewById<View>(R.id.auroraBackground)
@@ -82,15 +87,22 @@ class MainActivity : AppCompatActivity() {
         // 🚪 Logout Button
         val logoutButton = findViewById<View>(R.id.logoutButton)
         logoutButton.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-            val googleSignInClient = GoogleSignIn.getClient(this, gso)
-            googleSignInClient.signOut().addOnCompleteListener {
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                startActivity(intent)
-                finish()
-            }
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Log Out")
+                .setMessage("Are you sure you want to log out of your account?")
+                .setBackground(android.graphics.drawable.ColorDrawable(android.graphics.Color.WHITE))
+                .setPositiveButton("Log Out") { _, _ ->
+                    FirebaseAuth.getInstance().signOut()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    startActivity(intent)
+                    finish()
+                }
+                .setNegativeButton("Cancel", null)
+                .show().apply {
+                    getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE)?.setTextColor(android.graphics.Color.parseColor("#EF4444")) // Red
+                    getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE)?.setTextColor(android.graphics.Color.parseColor("#64748B")) // Grey
+                }
         }
 
         // Fetch weather
@@ -117,6 +129,12 @@ class MainActivity : AppCompatActivity() {
 
         val allPages = listOf(pageDashboard, pageNavigate, pageSos, pageAlerts, pageAssistant)
 
+        // ═══ Resource Cards Setup ═══
+        findViewById<View>(R.id.cardShelter)?.setOnClickListener { fetchLocationAndOpenMap("Community Center Shelter") }
+        findViewById<View>(R.id.cardWater)?.setOnClickListener { fetchLocationAndOpenMap("Water Distribution Point") }
+        findViewById<View>(R.id.cardFirstAid)?.setOnClickListener { fetchLocationAndOpenMap("Mobile First Aid Station") }
+        findViewById<View>(R.id.cardFoodBank)?.setOnClickListener { fetchLocationAndOpenMap("Emergency Food Bank") }
+
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigation)
         bottomNavigationView.setOnItemSelectedListener { item ->
             allPages.forEach { it.visibility = View.GONE }
@@ -134,11 +152,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        
+        // Check if location is enabled to hide/show the location error banner
+        val permissionGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        
+        val errorBanner = findViewById<View>(R.id.locationErrorBanner)
+        if (errorBanner != null) {
+            if (permissionGranted && isGpsEnabled) {
+                errorBanner.visibility = View.GONE
+            } else {
+                errorBanner.visibility = View.VISIBLE
+            }
+        }
+
         if (isWaitingForGps) {
             isWaitingForGps = false
-            val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
-            val isGpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || 
-                               locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
             if (isGpsEnabled) {
                 restartApp()
             }
@@ -251,7 +281,7 @@ class MainActivity : AppCompatActivity() {
 
     // 🔹 Permission result
     
-    private fun fetchLocationAndOpenMap() {
+    private fun fetchLocationAndOpenMap(targetResourceName: String? = null) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 val lat = location?.latitude ?: 40.7128
@@ -259,6 +289,9 @@ class MainActivity : AppCompatActivity() {
                 val trackingIntent = Intent(this@MainActivity, MapTrackerActivity::class.java).apply {
                     putExtra("LATITUDE", lat)
                     putExtra("LONGITUDE", lng)
+                    if (targetResourceName != null) {
+                        putExtra("TARGET_RESOURCE_NAME", targetResourceName)
+                    }
                 }
                 startActivity(trackingIntent)
             }.addOnFailureListener {
@@ -266,6 +299,9 @@ class MainActivity : AppCompatActivity() {
                 val trackingIntent = Intent(this@MainActivity, MapTrackerActivity::class.java).apply {
                     putExtra("LATITUDE", 40.7128)
                     putExtra("LONGITUDE", -74.0060)
+                    if (targetResourceName != null) {
+                        putExtra("TARGET_RESOURCE_NAME", targetResourceName)
+                    }
                 }
                 startActivity(trackingIntent)
             }

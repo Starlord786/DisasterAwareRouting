@@ -70,19 +70,6 @@
 
                 </LinearLayout>
 
-                <!-- Logout button overlaid top-left -->
-                <ImageButton
-                    android:id="@+id/logoutButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_gravity="top|start"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="12dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_logout"
-                    android:contentDescription="Logout"
-                    app:tint="#4F46E5"/>
-
             </FrameLayout>
 
             <!-- ─────────── Cards Area ─────────── -->
@@ -257,6 +244,404 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <!-- ═══════════ SOS HINT STRIP ═══════════ -->
+
+                <!-- ═══════════ AVAILABLE RESOURCES ═══════════ -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Available Resources"
+                        android:textColor="#0F172A"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="-0.01"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Find available aid and supplies near you."
+                        android:textColor="#64748B"
+                        android:textSize="14sp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Location Error banner -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/locationErrorBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#FCA5A5"
+                        app:cardBackgroundColor="#FEF2F2">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp"
+                            android:gravity="center_vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="⚠️"
+                                android:textSize="18sp"
+                                android:layout_marginEnd="12dp"/>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Location Error"
+                                    android:textColor="#991B1B"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"/>
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Location permission denied. Showing all resources."
+                                    android:textColor="#B91C1C"
+                                    android:textSize="12sp"
+                                    android:layout_marginTop="2dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Resource 1: Community Center Shelter -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardShelter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#E2E8F0"
+                        app:cardBackgroundColor="#FFFFFF">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
+
+                            <!-- Icon bubble -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                app:cardCornerRadius="18dp"
+                                app:cardBackgroundColor="#F1F5F9"
+                                app:cardElevation="0dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="🏢"
+                                    android:textSize="30sp"
+                                    android:layout_gravity="center"/>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="SHELTER"
+                                    android:textColor="#3B82F6"
+                                    android:textSize="11sp"
+                                    android:letterSpacing="0.1"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Community Center"
+                                    android:textColor="#0F172A"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="2dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Open 24/7 · 150 beds"
+                                    android:textColor="#64748B"
+                                    android:textSize="13sp"
+                                    android:layout_marginTop="2dp"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="›"
+                                android:textColor="#CBD5E1"
+                                android:textSize="36sp"
+                                android:layout_marginStart="8dp"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Resource 2: Water Distribution Point -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardWater"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#E2E8F0"
+                        app:cardBackgroundColor="#FFFFFF">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
+
+                            <!-- Icon bubble -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                app:cardCornerRadius="18dp"
+                                app:cardBackgroundColor="#F0FDF4"
+                                app:cardElevation="0dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="💧"
+                                    android:textSize="30sp"
+                                    android:layout_gravity="center"/>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="WATER"
+                                    android:textColor="#10B981"
+                                    android:textSize="11sp"
+                                    android:letterSpacing="0.1"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Distribution Point"
+                                    android:textColor="#0F172A"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="2dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Bottled · 500 gal"
+                                    android:textColor="#64748B"
+                                    android:textSize="13sp"
+                                    android:layout_marginTop="2dp"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="›"
+                                android:textColor="#CBD5E1"
+                                android:textSize="36sp"
+                                android:layout_marginStart="8dp"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Resource 3: Mobile First Aid Station -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardFirstAid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#E2E8F0"
+                        app:cardBackgroundColor="#FFFFFF">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
+
+                            <!-- Icon bubble -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                app:cardCornerRadius="18dp"
+                                app:cardBackgroundColor="#FEF2F2"
+                                app:cardElevation="0dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="🏥"
+                                    android:textSize="30sp"
+                                    android:layout_gravity="center"/>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="FIRST AID"
+                                    android:textColor="#EF4444"
+                                    android:textSize="11sp"
+                                    android:letterSpacing="0.1"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Mobile Station"
+                                    android:textColor="#0F172A"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="2dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Immediate aid · Resp."
+                                    android:textColor="#64748B"
+                                    android:textSize="13sp"
+                                    android:layout_marginTop="2dp"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="›"
+                                android:textColor="#CBD5E1"
+                                android:textSize="36sp"
+                                android:layout_marginStart="8dp"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Resource 4: Emergency Food Bank -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardFoodBank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:cardCornerRadius="24dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="#E2E8F0"
+                        app:cardBackgroundColor="#FFFFFF">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp"
+                            android:gravity="center_vertical">
+
+                            <!-- Icon bubble -->
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                app:cardCornerRadius="18dp"
+                                app:cardBackgroundColor="#FFFBEB"
+                                app:cardElevation="0dp">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="🍲"
+                                    android:textSize="30sp"
+                                    android:layout_gravity="center"/>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_marginStart="16dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="FOOD"
+                                    android:textColor="#F59E0B"
+                                    android:textSize="11sp"
+                                    android:letterSpacing="0.1"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Emergency Bank"
+                                    android:textColor="#0F172A"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="2dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Non-perishable · 2 tons"
+                                    android:textColor="#64748B"
+                                    android:textSize="13sp"
+                                    android:layout_marginTop="2dp"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="›"
+                                android:textColor="#CBD5E1"
+                                android:textSize="36sp"
+                                android:layout_marginStart="8dp"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
 
             </LinearLayout>
 

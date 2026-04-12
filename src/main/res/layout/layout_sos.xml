@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F0A0A">
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#1A0505"
+            android:background="#FFFFFF"
             android:paddingTop="52dp"
             android:paddingBottom="28dp"
             android:paddingStart="24dp"
@@ -35,7 +35,7 @@
                     android:layout_width="88dp"
                     android:layout_height="88dp"
                     android:background="@drawable/circle_pulse"
-                    android:alpha="0.4"/>
+                    android:alpha="0.2"/>
 
                 <!-- Red circle -->
                 <com.google.android.material.card.MaterialCardView
@@ -43,14 +43,14 @@
                     android:layout_height="72dp"
                     android:layout_gravity="center"
                     app:cardCornerRadius="36dp"
-                    app:cardBackgroundColor="#DC2626"
+                    app:cardBackgroundColor="#FEE2E2"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
                     <ImageView
                         android:layout_width="38dp"
                         android:layout_height="38dp"
                         android:src="@drawable/ic_sos"
-                        app:tint="#FFFFFF"
+                        app:tint="#DC2626"
                         android:layout_gravity="center"/>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Emergency SOS"
-                android:textColor="#FFFFFF"
+                android:textColor="#0F172A"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:letterSpacing="-0.01"/>
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tap any number to call instantly"
-                android:textColor="#F87171"
+                android:textColor="#64748B"
                 android:textSize="13sp"
                 android:layout_marginTop="6dp"/>
 
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp"
-            android:paddingTop="24dp">
+            android:paddingTop="0dp">
 
             <!-- 🚨 National Emergency  112 -->
             <com.google.android.material.card.MaterialCardView
@@ -94,8 +94,9 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 app:cardCornerRadius="22dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="0dp"
-                app:cardBackgroundColor="#DC2626">
+                app:strokeWidth="1dp"
+                app:strokeColor="#FECACA"
+                app:cardBackgroundColor="#FEF2F2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,7 +109,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         app:cardCornerRadius="16dp"
-                        app:cardBackgroundColor="#B91C1C"
+                        app:cardBackgroundColor="#FCA5A5"
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp">
                         <TextView
@@ -129,7 +130,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="NATIONAL EMERGENCY"
-                            android:textColor="#FCA5A5"
+                            android:textColor="#991B1B"
                             android:textSize="11sp"
                             android:letterSpacing="0.1"
                             android:textStyle="bold"/>
@@ -137,7 +138,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="112"
-                            android:textColor="#FFFFFF"
+                            android:textColor="#7F1D1D"
                             android:textSize="32sp"
                             android:textStyle="bold"
                             android:layout_marginTop="0dp"/>
@@ -145,7 +146,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="All Emergencies"
-                            android:textColor="#FCA5A5"
+                            android:textColor="#DC2626"
                             android:textSize="13sp"/>
                     </LinearLayout>
 
@@ -153,7 +154,7 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:src="@drawable/ic_cool_call"
-                        app:tint="#FFFFFF"/>
+                        app:tint="#DC2626"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -176,8 +177,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="0dp"
-                    app:cardBackgroundColor="#1E1B4B">
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E0E7FF"
+                    app:cardBackgroundColor="#F5F8FF">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -195,14 +197,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="100"
-                            android:textColor="#FFFFFF"
+                            android:textColor="#312E81"
                             android:textSize="30sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Police"
-                            android:textColor="#A5B4FC"
+                            android:textColor="#4F46E5"
                             android:textSize="13sp"
                             android:layout_marginTop="2dp"/>
 
@@ -211,14 +213,14 @@
                             android:layout_height="36dp"
                             android:layout_marginTop="14dp"
                             app:cardCornerRadius="10dp"
-                            app:cardBackgroundColor="#3730A3"
+                            app:cardBackgroundColor="#E0E7FF"
                             app:cardElevation="0dp"
                             app:strokeWidth="0dp">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Call Now"
-                                android:textColor="#FFFFFF"
+                                android:textColor="#4F46E5"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:layout_gravity="center"/>
@@ -238,8 +240,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="0dp"
-                    app:cardBackgroundColor="#052E16">
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#D1FAE5"
+                    app:cardBackgroundColor="#F0FDF4">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -257,14 +260,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="108"
-                            android:textColor="#FFFFFF"
+                            android:textColor="#064E3B"
                             android:textSize="30sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Ambulance"
-                            android:textColor="#6EE7B7"
+                            android:textColor="#059669"
                             android:textSize="13sp"
                             android:layout_marginTop="2dp"/>
 
@@ -273,14 +276,14 @@
                             android:layout_height="36dp"
                             android:layout_marginTop="14dp"
                             app:cardCornerRadius="10dp"
-                            app:cardBackgroundColor="#166534"
+                            app:cardBackgroundColor="#D1FAE5"
                             app:cardElevation="0dp"
                             app:strokeWidth="0dp">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Call Now"
-                                android:textColor="#FFFFFF"
+                                android:textColor="#059669"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:layout_gravity="center"/>
@@ -309,8 +312,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="0dp"
-                    app:cardBackgroundColor="#431407">
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#FFEDD5"
+                    app:cardBackgroundColor="#FFF7ED">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -328,14 +332,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="101"
-                            android:textColor="#FFFFFF"
+                            android:textColor="#7C2D12"
                             android:textSize="30sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Fire Brigade"
-                            android:textColor="#FED7AA"
+                            android:textColor="#EA580C"
                             android:textSize="13sp"
                             android:layout_marginTop="2dp"/>
 
@@ -344,14 +348,14 @@
                             android:layout_height="36dp"
                             android:layout_marginTop="14dp"
                             app:cardCornerRadius="10dp"
-                            app:cardBackgroundColor="#9A3412"
+                            app:cardBackgroundColor="#FFEDD5"
                             app:cardElevation="0dp"
                             app:strokeWidth="0dp">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Call Now"
-                                android:textColor="#FFFFFF"
+                                android:textColor="#EA580C"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:layout_gravity="center"/>
@@ -371,8 +375,9 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="0dp"
-                    app:cardBackgroundColor="#0C1A2E">
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#E0F2FE"
+                    app:cardBackgroundColor="#F0F9FF">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -390,14 +395,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1078"
-                            android:textColor="#FFFFFF"
+                            android:textColor="#0C4A6E"
                             android:textSize="26sp"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="NDRF Helpline"
-                            android:textColor="#93C5FD"
+                            android:textColor="#0284C7"
                             android:textSize="13sp"
                             android:layout_marginTop="2dp"/>
 
@@ -406,14 +411,14 @@
                             android:layout_height="36dp"
                             android:layout_marginTop="14dp"
                             app:cardCornerRadius="10dp"
-                            app:cardBackgroundColor="#1E3A5F"
+                            app:cardBackgroundColor="#E0F2FE"
                             app:cardElevation="0dp"
                             app:strokeWidth="0dp">
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Call Now"
-                                android:textColor="#FFFFFF"
+                                android:textColor="#0284C7"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
                                 android:layout_gravity="center"/>
@@ -427,12 +432,12 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="48dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#3F1010"
-                app:cardBackgroundColor="#1A0505">
+                app:strokeColor="#FECACA"
+                app:cardBackgroundColor="#FEF2F2">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -450,7 +455,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Only use in genuine emergencies. False calls are a criminal offence."
-                        android:textColor="#F87171"
+                        android:textColor="#B91C1C"
                         android:textSize="12sp"
                         android:lineSpacingExtra="3dp"/>
                 </LinearLayout>
