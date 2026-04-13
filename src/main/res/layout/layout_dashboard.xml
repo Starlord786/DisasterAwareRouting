@@ -55,6 +55,15 @@
                         android:letterSpacing="-0.01"/>
                 </LinearLayout>
 
+                <ImageButton
+                    android:id="@+id/logoutButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_logout"
+                    android:contentDescription="Logout"
+                    app:tint="#4F46E5" />
+
             </LinearLayout>
 
         </LinearLayout>
