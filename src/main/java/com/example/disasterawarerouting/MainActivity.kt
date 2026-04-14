@@ -105,6 +105,79 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
+        // ═══ Chatbot AI Setup ═══
+        val chatInputEditText = findViewById<android.widget.EditText>(R.id.chatInputEditText)
+        val chatSendButton = findViewById<View>(R.id.chatSendButton)
+        val chatMessageContainer = findViewById<android.widget.LinearLayout>(R.id.chatMessageContainer)
+        val chatScrollView = findViewById<android.widget.ScrollView>(R.id.chatScrollView)
+
+        fun addChatMessage(message: String, isUser: Boolean) {
+            val layoutId = if (isUser) R.layout.layout_chat_message_user else R.layout.layout_chat_message_ai
+            val chatView = layoutInflater.inflate(layoutId, chatMessageContainer, false)
+            chatView.findViewById<android.widget.TextView>(R.id.messageText).text = message
+            chatMessageContainer.addView(chatView)
+            
+            chatScrollView.post {
+                chatScrollView.fullScroll(View.FOCUS_DOWN)
+            }
+        }
+
+        addChatMessage("Hello! I am your AI Disaster Assistant. How can I help you stay safe today?", false)
+
+        chatSendButton.setOnClickListener {
+            val query = chatInputEditText.text.toString().trim()
+            if (query.isNotEmpty()) {
+                addChatMessage(query, true)
+                chatInputEditText.text.clear()
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (isFinishing || isDestroyed) return@postDelayed
+                    val lowerQuery = query.lowercase().trim()
+                    val response = when {
+                        // Conversational
+                        lowerQuery.matches(Regex(".*\\b(hi|hello|hey|hola|yo|greetings)\\b.*")) -> "Hello! I am your Disaster Aware Routing Assistant. How can I help you stay safe today?"
+                        lowerQuery.matches(Regex(".*\\b(how are you|how r u|how are u)\\b.*")) -> "I am functioning perfectly and ready to assist you with emergency guidelines, routing, and survival tips."
+                        lowerQuery.matches(Regex(".*\\b(who are you|who r u)\\b.*")) -> "I am the Disaster Aware Routing Assistant. I'm an AI built directly into this app to help you navigate hazardous situations safely."
+                        lowerQuery.matches(Regex(".*\\b(what can you do|help me|help)\\b.*")) -> "I can give you survival instructions for various emergencies, guide you on using our map for safe routing, and explain app features like the SOS dialer. What do you need?"
+                        lowerQuery.matches(Regex(".*\\b(thank you|thanks|thx|ok|okay)\\b.*")) -> "You're very welcome! Please stay safe and let me know if you need anything else."
+                        lowerQuery.matches(Regex(".*\\b(bye|goodbye|see ya|exit)\\b.*")) -> "Stay safe! I'll be here if you need me."
+
+                        // Disasters
+                        lowerQuery.matches(Regex(".*\\b(earthquake|earthquakes)\\b.*")) -> "In an earthquake: DROP to your hands and knees, COVER your head and neck, and HOLD ON until shaking stops. Stay away from windows and exterior walls."
+                        lowerQuery.matches(Regex(".*\\b(fire|fires|wildfire|wildfires)\\b.*")) -> "In case of fire: Evacuate immediately. Crawl low under smoke to avoid inhalation. Do not use elevators. If clothes catch fire, Stop, Drop, and Roll."
+                        lowerQuery.matches(Regex(".*\\b(flood|floods|water|tsunami)\\b.*")) -> "For floods and tsunamis: Move to higher ground immediately. Do not walk or drive through floodwaters. Just 6 inches of moving water can knock you down."
+                        lowerQuery.matches(Regex(".*\\b(tornado|hurricane|storm|cyclone)\\b.*")) -> "During severe storms or tornadoes: Seek shelter in an interior room on the lowest floor, away from windows. Protect your head with blankets or pillows."
+                        lowerQuery.matches(Regex(".*\\b(power|blackout|outage)\\b.*")) -> "During a power outage: Keep freezers and refrigerators closed. Use flashlights instead of candles to prevent fires. Disconnect appliances to avoid damage from surges."
+                        
+                        // Emergencies / Medical
+                        lowerQuery.matches(Regex(".*\\b(injured|medical|hurt|first aid)\\b.*")) -> "If someone is seriously injured, use the SOS tab immediately to call emergency services. Do not move severely injured persons unless they are in immediate danger."
+                        lowerQuery.matches(Regex(".*\\b(evacuat|evacuation|evacuate)\\b.*")) -> "When instructed to evacuate: Leave immediately. Follow designated evacuation routes shown on our map, take your emergency kit, and secure your home if time permits."
+
+                        // App Features & Dynamic Data
+                        lowerQuery.matches(Regex(".*\\b(route|routes|navigate|navigation|map|maps)\\b.*")) -> "Use the Navigation tab to access our map. It will automatically calculate safe routes for you while dynamically avoiding designated red danger zones."
+                        lowerQuery.matches(Regex(".*\\b(safe zone|safe zones|shelter|shelters|hospital|hospitals)\\b.*")) -> "Safe zones and hospitals are marked on the map. You can also tap the resource cards on the Dashboard to get direct routing to the nearest community center or medical station."
+                        lowerQuery.matches(Regex(".*\\b(sos|emergency|police|ambulance)\\b.*")) -> "The SOS tab features direct one-tap dialing for Emergency Services, Police, Ambulance, and Fire Departments. Use it if you are in immediate danger."
+                        lowerQuery.matches(Regex(".*\\b(alert|alerts|notification|notifications)\\b.*")) -> "The Alerts tab shows active real-time warnings near your location. Ensure your location services are enabled to receive localized alerts."
+                        lowerQuery.matches(Regex(".*\\b(weather|wheather|temperature|forecast)\\b.*")) -> {
+                            val temp = findViewById<android.widget.TextView>(R.id.weatherTitleText)?.text?.toString() ?: "--°C"
+                            val desc = findViewById<android.widget.TextView>(R.id.weatherDescText)?.text?.toString() ?: "Unknown"
+                            val icon = findViewById<android.widget.TextView>(R.id.weatherIconText)?.text?.toString() ?: ""
+                            "The current weather in your location is $temp, $desc $icon. Please check the Dashboard for real-time updates."
+                        }
+                        lowerQuery.matches(Regex(".*\\b(active disaster|disaster|disasters|active disasters|current disaster)\\b.*")) -> {
+                            "Based on the local status overview, there are exactly 3 Active Alerts, 12 Hospitals, 5 Police Stations, and 8 Safe Zones nearby."
+                        }
+                        lowerQuery.matches(Regex(".*\\b(dashboard|home)\\b.*")) -> "The Dashboard gives you a quick area overview, including active alerts, nearby hospitals, safe zones, and a daily safety tip."
+                        lowerQuery.matches(Regex(".*\\b(password|account|login|logout)\\b.*")) -> "You can safely sign out of your account using the logout button located at the top right of the Dashboard."
+
+                        // Professional Fallback
+                        else -> "I understand your query, however, my expertise is strictly focused on emergency preparedness, disaster survival, and navigating this application safely. Please feel free to ask me anything related to those topics or how to use our features."
+                    }
+                    addChatMessage(response, false)
+                }, 1000)
+            }
+        }
+
         // Fetch weather
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
